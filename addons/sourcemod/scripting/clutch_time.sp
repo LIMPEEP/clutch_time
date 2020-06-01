@@ -5,11 +5,9 @@
 #include <sdktools>
 #include <csgo_colors>
 
-new Handle:talk;
-new flags_talk;
-new bool:clutch;
-
-int g_iCount;
+Handle talk;
+int flags_talk, g_iCount;
+bool clutch;
 
 public Plugin myinfo = {
     name = "Clutch Time",
@@ -49,10 +47,7 @@ Action OnStart(Event hEvent, const char[] sName, bool bDontBroadcast)
 {   
     if (GetClientCount(true) >= 3)
     {
-        if(clutch == true)
-        {
-            clutch = false;
-        }
+        clutch ^= true;
     }
 }
 
