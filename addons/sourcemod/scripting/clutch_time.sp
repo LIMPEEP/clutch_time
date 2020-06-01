@@ -6,13 +6,13 @@
 #include <csgo_colors>
 
 Handle talk;
-int flags_talk, g_iCount;
+int g_iCount;
 bool clutch;
 
 public Plugin myinfo = {
     name = "Clutch Time",
     author = "L1MON",
-    version = "1.1"
+    version = "1.3"
 };
 
 public void OnPluginStart() 
@@ -22,9 +22,6 @@ public void OnPluginStart()
     HookEvent("round_end", OnEnd);
     HookEvent("server_cvar", OnCvarChange, EventHookMode_Pre);
     talk = FindConVar("sv_deadtalk");
-    flags_talk = GetConVarFlags (talk);
-    flags_talk = FCVAR_NOTIFY;
-    SetConVarFlags(talk, flags_talk);
 
     ConVar hCvar;
     HookConVarChange((hCvar = CreateConVar("sm_min_clutch", "4", _, _, true, 0.0, _, _)), Count_Players);
@@ -36,7 +33,7 @@ public void OnPluginStart()
 stock int UTIL_GetAliveClientsInTeam(int iTeamId)
 {
     int iPlayers;
-    for (int iClient = MaxClients; iClient != 0; --iClient)
+    for (int iClient = MaxClients + 1; --iClient;)
         if (IsClientInGame(iClient) && GetClientTeam(iClient) == iTeamId && IsPlayerAlive(iClient))
             iPlayers++;
 
@@ -47,7 +44,7 @@ Action OnStart(Event hEvent, const char[] sName, bool bDontBroadcast)
 {   
     if (GetClientCount(true) >= 3)
     {
-        clutch ^= true;
+        clutch = clutch ? false : true;
     }
 }
 
