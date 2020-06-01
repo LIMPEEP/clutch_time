@@ -12,7 +12,7 @@ bool clutch;
 public Plugin myinfo = {
     name = "Clutch Time",
     author = "L1MON",
-    version = "1.3"
+    version = "1.3.1"
 };
 
 public void OnPluginStart() 
@@ -42,10 +42,7 @@ stock int UTIL_GetAliveClientsInTeam(int iTeamId)
 
 Action OnStart(Event hEvent, const char[] sName, bool bDontBroadcast)
 {   
-    if (GetClientCount(true) >= 3)
-    {
-        clutch = clutch ? false : true;
-    }
+    clutch = false;
 }
 
 Action OnDeath(Event hEvent, const char[] sName, bool bDontBroadcast)
