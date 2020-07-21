@@ -1,25 +1,28 @@
 #pragma semicolon 1
 
-#include <sourcemod>
-#include <clients>
-#include <sdktools>
 #include <csgo_colors>
+
+#pragma newdecls required
+
+#include <sdktools_gamerules>
 
 Handle talk;
 int g_iCount;
-bool clutch;
+bool clutch, clutch_msg;
 
 public Plugin myinfo = {
     name = "Clutch Time",
     author = "L1MON",
-    version = "1.3.1"
+    version = "1.4.0"
 };
 
 public void OnPluginStart() 
 {
-    HookEvent("round_start", OnStart);
-    HookEvent("player_death", OnDeath);
-    HookEvent("round_end", OnEnd);
+    if(GetEngineVersion() != Engine_CSGO) SetFailState("Plugin for CS:GO only!");
+
+    HookEvent("round_start", OnStart, EventHookMode_PostNoCopy);
+    HookEvent("player_death", OnDeath, EventHookMode_PostNoCopy);
+    HookEvent("round_end", OnEnd, EventHookMode_PostNoCopy);
     HookEvent("server_cvar", OnCvarChange, EventHookMode_Pre);
     talk = FindConVar("sv_deadtalk");
 
@@ -30,7 +33,7 @@ public void OnPluginStart()
     LoadTranslations("cluth_time.phrases");
 }
 
-stock int UTIL_GetAliveClientsInTeam(int iTeamId)
+stock int GetAliveInTeam(int iTeamId)
 {
     int iPlayers;
     for (int iClient = MaxClients + 1; --iClient;)
@@ -43,33 +46,28 @@ stock int UTIL_GetAliveClientsInTeam(int iTeamId)
 Action OnStart(Event hEvent, const char[] sName, bool bDontBroadcast)
 {   
     clutch = false;
+    clutch_msg = false;
 }
 
 Action OnDeath(Event hEvent, const char[] sName, bool bDontBroadcast)
 {   
-    if (GameRules_GetProp("m_bWarmupPeriod", 1) != 1)
+    if(GetClientCount(true) >= g_iCount && !GameRules_GetProp("m_bWarmupPeriod", 1) && clutch == false && (GetAliveInTeam(2) == 1 || GetAliveInTeam(3) == 1))
     {
-        if (GetClientCount(true) >= g_iCount)
-        {
-            if ((UTIL_GetAliveClientsInTeam(2) == 1 || UTIL_GetAliveClientsInTeam(3) == 1) && clutch == false)
-            {
-                SetConVarInt(talk, 0, false, false);
-                CGOPrintToChatAll("%t", "clutch_on");
-                clutch = true;
-            }
-        }
+        SetConVarInt(talk, 0, false, false);
+        CGOPrintToChatAll("clutch_on");
+        clutch = true;
+        clutch_msg = true;
     }
 }
 
 Action OnEnd(Event hEvent, const char[] sName, bool bDontBroadcast)
 {
-    if (GetClientCount(true) >= g_iCount)
+    clutch = true;
+
+    if(clutch_msg == true)
     {
-        if(clutch == true)
-        {
-            SetConVarInt(talk, 1, false, false);
-            CGOPrintToChatAll("%t", "clutch_off");
-        }
+        SetConVarInt(talk, 1, false, false);
+        CGOPrintToChatAll("clutch_off");
     }
 }
 
