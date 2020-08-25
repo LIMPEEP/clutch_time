@@ -2,14 +2,14 @@
 {
 	"clutch_on"
 	{
-		"ru"		"[{blue}PBOX{default}] Clutch Time включен"
-		"ua"		"[{blue}PBOX{default}] Clutch Time увімкнено"
-		"en"		"[{blue}PBOX{default}] Clutch Time is on"
+		"ru"		"[PBOX] Clutch Time включен!"
+		"ua"		"[PBOX] Clutch Time увімкнено!"
+		"en"		"[PBOX] Clutch Time is on!"
 	}
 	"clutch_off"
 	{
-		"ru"		"[{blue}PBOX{default}] Clutch Time выключен"
-		"ua"		"[{blue}PBOX{default}] Clutch Time вимкнено"
-		"en"		"[{blue}PBOX{default}] Clutch Time is off"
+		"ru"		"[PBOX] Clutch Time выключен!"
+		"ua"		"[PBOX] Clutch Time вимкнено!"
+		"en"		"[PBOX] Clutch Time is off!"
 	}
 }
