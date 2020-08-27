@@ -50,7 +50,7 @@ public Action OnDeath(Event hEvent, const char[] sName, bool bDontBroadcast)
     if(GetClientCount(true) >= g_iCount && !GameRules_GetProp("m_bWarmupPeriod", 1) && clutch == false && (GetAliveInTeam(2) == 1 || GetAliveInTeam(3) == 1))
     {
         SetConVarInt(talk, 0, false, false);
-        PrintToChatAll("%T", "clutch_on");
+        PrintToChatAll("%t", "clutch_on");
         clutch = true;
         clutch_msg = true;
     }
@@ -63,7 +63,7 @@ public Action OnEnd(Event hEvent, const char[] sName, bool bDontBroadcast)
     if(clutch_msg == true)
     {
         SetConVarInt(talk, 1, false, false);
-        PrintToChatAll("%T", "clutch_off");
+        PrintToChatAll("%t", "clutch_off");
     }
 }
 
